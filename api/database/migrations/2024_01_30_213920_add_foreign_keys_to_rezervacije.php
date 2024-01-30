@@ -13,16 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ocenas', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('korisnik_id');
-            $table->unsignedBigInteger('usluga_id');
-            $table->integer('ocena');  
-            $table->text('komentar')->nullable();
-            $table->timestamps();
-
+        Schema::table('rezervacijas', function (Blueprint $table) {
             $table->foreign('korisnik_id')->references('id')->on('users');
             $table->foreign('usluga_id')->references('id')->on('uslugas');
+            $table->foreign('zaposleni_id')->references('id')->on('users');
         });
     }
 
@@ -33,6 +27,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ocenas');
+        Schema::table('rezervacijas', function (Blueprint $table) {
+            $table->dropForeign(['korisnik_id']);
+            $table->dropForeign(['usluga_id']);
+            $table->dropForeign(['zaposleni_id']);
+        });
     }
 };

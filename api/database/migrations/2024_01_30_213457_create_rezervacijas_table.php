@@ -14,8 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('rezervacijas', function (Blueprint $table) {
+           
             $table->id();
+            $table->unsignedBigInteger('korisnik_id');
+            $table->unsignedBigInteger('usluga_id');
+            $table->datetime('datum');
+            $table->string('vreme');
+            $table->unsignedBigInteger('zaposleni_id');
             $table->timestamps();
+ 
         });
     }
 

@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('uslugas', function (Blueprint $table) {
-            $table->id();
-            $table->string('naziv');
-            $table->text('opis')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->timestamps();
+        Schema::table('uslugas', function (Blueprint $table) {
+            $table->renameColumn('price', 'cena');
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uslugas');
+        Schema::table('uslugas', function (Blueprint $table) {
+            $table->renameColumn('cena', 'price');
+        });
     }
 };

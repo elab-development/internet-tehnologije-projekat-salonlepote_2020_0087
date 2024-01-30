@@ -11,5 +11,11 @@ class Usluga extends Model
     protected $fillable = [
         'naziv', 'opis', 'cena',  
     ];
-    
+
+    public function zaposleni()
+    {
+        return $this->belongsToMany(Rezervacija::class );
+    }
+
+
 }

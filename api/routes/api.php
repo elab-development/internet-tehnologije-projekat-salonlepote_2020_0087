@@ -26,9 +26,6 @@ Route::resource('usluge', UslugaController::class)->except(['create', 'edit']);
 
 Route::get('/ocene', [OcenaController::class, 'index']);
 Route::get('/ocene/{id}', [OcenaController::class, 'show']);
-Route::post('/ocene', [OcenaController::class, 'store']);
-Route::put('/ocene/{id}', [OcenaController::class, 'update']);
-Route::delete('/ocene/{id}', [OcenaController::class, 'destroy']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -40,4 +37,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/rezervacije/{id}', [RezervacijaController::class, 'update']);
     Route::delete('/rezervacije/{id}', [RezervacijaController::class, 'destroy']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+   
+    Route::post('/ocene', [OcenaController::class, 'store']);
+    Route::put('/ocene/{id}', [OcenaController::class, 'update']);
+    Route::delete('/ocene/{id}', [OcenaController::class, 'destroy']);
+});
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    // Rute dostupne samo administratorima
+});
+
+Route::middleware(['auth:sanctum', 'role:sminker'])->group(function () {
+    // Rute dostupne samo šminkerima
+});
+
+Route::middleware(['auth:sanctum', 'role:korisnik'])->group(function () {
+    // Rute dostupne samo običnim korisnicima
 });

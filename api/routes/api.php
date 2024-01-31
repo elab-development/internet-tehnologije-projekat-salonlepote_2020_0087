@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OcenaController;
 use App\Http\Controllers\RezervacijaController;
 use App\Http\Controllers\UslugaController;
 use Illuminate\Http\Request;
@@ -21,3 +22,9 @@ Route::get('/rezervacije/{id}', [RezervacijaController::class, 'show']);
 Route::post('/rezervacije', [RezervacijaController::class, 'store']);
 Route::put('/rezervacije/{id}', [RezervacijaController::class, 'update']);
 Route::delete('/rezervacije/{id}', [RezervacijaController::class, 'destroy']);
+
+Route::get('/ocene', [OcenaController::class, 'index']);
+Route::get('/ocene/{id}', [OcenaController::class, 'show']);
+Route::post('/ocene', [OcenaController::class, 'store']);
+Route::put('/ocene/{id}', [OcenaController::class, 'update']);
+Route::delete('/ocene/{id}', [OcenaController::class, 'destroy']);

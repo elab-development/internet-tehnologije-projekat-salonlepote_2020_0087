@@ -7,31 +7,28 @@ use Illuminate\Http\Request;
 use App\Http\Resources\RezervacijaResource;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Carbon;
 
 class RezervacijaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $rezervacije = Rezervacija::all();
-        return RezervacijaResource::collection($rezervacije);
-    }
+        // Uzmi ulogovanog korisnika
+        $user = $request->user();
 
-    public function show($id)
-    {
-        try {
-            $rezervacija = Rezervacija::findOrFail($id);
-            return new RezervacijaResource($rezervacija);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Rezervacija not found'], 404);
-        }
+        // Vrati sve rezervacije tog korisnika
+        $rezervacije = Rezervacija::where('korisnik_id', $user->id)->get();
+        return RezervacijaResource::collection($rezervacije);
     }
 
     public function store(Request $request)
     {
+        // Uzmi ulogovanog korisnika
+        $user = $request->user();
+
         $validator = Validator::make($request->all(), [
-            'korisnik_id' => 'required|exists:users,id',
             'usluga_id' => 'required|exists:uslugas,id',
-            'datum' => 'required|date',
+            'datum' => 'required|date|after_or_equal:today',
             'vreme' => 'required',
             'zaposleni_id' => 'required|exists:users,id',
         ]);
@@ -39,6 +36,9 @@ class RezervacijaController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
+
+        // Postavi korisnika na ulogovanog korisnika
+        $request->merge(['korisnik_id' => $user->id]);
 
         $rezervacija = Rezervacija::create($request->all());
 
@@ -48,12 +48,19 @@ class RezervacijaController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // Uzmi ulogovanog korisnika
+            $user = $request->user();
+
             $rezervacija = Rezervacija::findOrFail($id);
 
+            // Proveri da li rezervacija pripada ulogovanom korisniku
+            if ($rezervacija->korisnik_id !== $user->id) {
+                return response()->json(['error' => 'Nemate pristup ovoj rezervaciji'], 403);
+            }
+
             $validator = Validator::make($request->all(), [
-                'korisnik_id' => 'exists:users,id',
                 'usluga_id' => 'exists:uslugas,id',
-                'datum' => 'date',
+                'datum' => 'date|after_or_equal:today',
                 'vreme' => '',
                 'zaposleni_id' => 'exists:users,id',
             ]);
@@ -70,10 +77,25 @@ class RezervacijaController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
+            // Uzmi ulogovanog korisnika
+            $user = $request->user();
+
             $rezervacija = Rezervacija::findOrFail($id);
+
+            // Proveri da li rezervacija pripada ulogovanom korisniku
+            if ($rezervacija->korisnik_id !== $user->id) {
+                return response()->json(['error' => 'Nemate pristup ovoj rezervaciji'], 403);
+            }
+
+            // Proveri da li je rezervacija u budućnosti
+            $datumRezervacije = Carbon::parse($rezervacija->datum);
+            if ($datumRezervacije->isPast()) {
+                return response()->json(['error' => 'Ne možete obrisati prošlu rezervaciju'], 400);
+            }
+
             $rezervacija->delete();
             return response()->json(['message' => 'Rezervacija deleted'], 200);
         } catch (ModelNotFoundException $e) {

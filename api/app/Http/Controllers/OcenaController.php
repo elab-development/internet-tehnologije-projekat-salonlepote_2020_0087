@@ -28,8 +28,10 @@ class OcenaController extends Controller
 
     public function store(Request $request)
     {
+        // Uzmi ulogovanog korisnika
+        $user = $request->user();
+
         $validator = Validator::make($request->all(), [
-            'korisnik_id' => 'required|exists:users,id',
             'usluga_id' => 'required|exists:uslugas,id',
             'ocena' => 'required|integer|min:1|max:5',
             'komentar' => 'nullable|string',
@@ -39,6 +41,9 @@ class OcenaController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
+        // Postavi korisnika na ulogovanog korisnika
+        $request->merge(['korisnik_id' => $user->id]);
+
         $ocena = Ocena::create($request->all());
 
         return new OcenaResource($ocena);
@@ -47,10 +52,17 @@ class OcenaController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // Uzmi ulogovanog korisnika
+            $user = $request->user();
+
             $ocena = Ocena::findOrFail($id);
 
+            // Proveri da li je ulogovani korisnik ostavio ovu ocenu
+            if ($ocena->korisnik_id !== $user->id) {
+                return response()->json(['error' => 'Nemate pristup ovoj oceni'], 403);
+            }
+
             $validator = Validator::make($request->all(), [
-                'korisnik_id' => 'exists:users,id',
                 'usluga_id' => 'exists:uslugas,id',
                 'ocena' => 'integer|min:1|max:5',
                 'komentar' => 'nullable|string',
@@ -68,10 +80,19 @@ class OcenaController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try {
+            // Uzmi ulogovanog korisnika
+            $user = $request->user();
+
             $ocena = Ocena::findOrFail($id);
+
+            // Proveri da li je ulogovani korisnik ostavio ovu ocenu
+            if ($ocena->korisnik_id !== $user->id) {
+                return response()->json(['error' => 'Nemate pristup ovoj oceni'], 403);
+            }
+
             $ocena->delete();
             return response()->json(['message' => 'Ocena deleted'], 200);
         } catch (ModelNotFoundException $e) {

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Rezervacija;
 use Illuminate\Http\Request;
 use App\Http\Resources\RezervacijaResource;
+use App\Mail\RezervacijaConfirmation;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class RezervacijaController extends Controller
 {
@@ -41,6 +43,10 @@ class RezervacijaController extends Controller
         $request->merge(['korisnik_id' => $user->id]);
 
         $rezervacija = Rezervacija::create($request->all());
+
+
+        //sada jos i saljemo rezervaciju na mejl 
+        Mail::to($user->email)->send(new RezervacijaConfirmation($rezervacija, $user));
 
         return new RezervacijaResource($rezervacija);
     }

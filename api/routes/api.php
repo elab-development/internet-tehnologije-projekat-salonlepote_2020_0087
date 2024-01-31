@@ -19,17 +19,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-
+Route::post('/register', [AuthController::class, 'register']); 
 Route::resource('usluge', UslugaController::class)->except(['create', 'edit']);
-
+ 
 
 Route::get('/ocene', [OcenaController::class, 'index']);
 Route::get('/ocene/{id}', [OcenaController::class, 'show']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
-
 
     Route::get('/rezervacije', [RezervacijaController::class, 'index']);
     Route::get('/rezervacije/{id}', [RezervacijaController::class, 'show']);

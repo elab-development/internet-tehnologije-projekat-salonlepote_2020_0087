@@ -10,12 +10,10 @@ class Usluga extends Model
     use HasFactory;
     protected $fillable = [
         'naziv', 'opis', 'cena',  
-    ];
-
-    public function zaposleni()
+    ]; 
+    public function rezervacije()
     {
         return $this->belongsToMany(Rezervacija::class );
     }
-
 
 }

@@ -70,5 +70,5 @@ class UslugaController extends Controller
         $usluga->delete();
 
         return response()->json(['message' => 'Usluga deleted successfully'], 200);
-    }
+    } 
 }

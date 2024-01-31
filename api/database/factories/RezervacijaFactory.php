@@ -21,7 +21,7 @@ class RezervacijaFactory extends Factory
             'usluga_id' => $this->faker->numberBetween(1, 5),
             'datum' => $this->faker->date(),
             'vreme' => $this->faker->time(),
-            'zaposleni_id' => 6,  
+            'zaposleni_id' => $this->faker->numberBetween(6, 10),  
         ];
     }
 }

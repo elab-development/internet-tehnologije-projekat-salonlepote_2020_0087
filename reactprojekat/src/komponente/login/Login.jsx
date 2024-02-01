@@ -21,6 +21,7 @@ function Login() {
       const response = await axios.post('http://127.0.0.1:8000/api/login', credentials);
       console.log(response.data);
         sessionStorage.setItem("token",response.data.token)
+        sessionStorage.setItem("id",response.data.user.id)
         navigate('/rezervacije');
     } catch (error) {
       console.error('Login error', error);

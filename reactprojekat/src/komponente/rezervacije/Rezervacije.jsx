@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import RedTabele from './RedTabele';
 
 const Rezervacije = () => {
   const [reservations, setReservations] = useState([]);
@@ -50,15 +51,8 @@ const Rezervacije = () => {
           </tr>
         </thead>
         <tbody>
-          {reservations && reservations.map((reservation) => (
-            <tr key={reservation.id}>
-              <td>{reservation.id}</td>
-              <td>{reservation.datum}</td>
-              <td>{reservation.vreme}</td>
-              <td>{reservation.korisnik.name}</td>
-              <td>{reservation.zaposleni.name}</td>
-              <td>{reservation.usluga.naziv}</td>
-            </tr>
+            {reservations.map((reservation) => (
+            <RedTabele key={reservation.id} reservation={reservation} />  
           ))}
         </tbody>
       </table>

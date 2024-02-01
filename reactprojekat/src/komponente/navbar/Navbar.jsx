@@ -27,6 +27,9 @@ function Navbar({ token, setToken }) {
         <li>
           <Link to="/">Početna</Link>
         </li>
+        <li>
+            <Link to="/cenovnik">Cenovnik</Link>
+          </li>
         {token && (<>
           <li>
             <Link to="/rezervacije">Rezervacije</Link>

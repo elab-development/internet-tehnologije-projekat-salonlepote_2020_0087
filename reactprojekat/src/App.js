@@ -6,6 +6,7 @@ import Rezervacije from './komponente/rezervacije/Rezervacije';
 import {BrowserRouter, Routes,Route } from 'react-router-dom';
 import Navbar from './komponente/navbar/Navbar';
 import CreateReservation from './komponente/rezervacije/create/CreateReservation';
+import Cenovnik from './komponente/usluge/cenovnik';
  
 function App() {
   const [token,setToken] = useState(null);
@@ -19,7 +20,7 @@ function App() {
             <Route path="/rezervacije/dodaj" element ={ <CreateReservation></CreateReservation>  }/>
 
             <Route path="/rezervacije" element ={ <Rezervacije></Rezervacije>  }/>
-           
+            <Route path="/cenovnik" element={<Cenovnik />} />
             </Routes>
         </BrowserRouter>
     </div>

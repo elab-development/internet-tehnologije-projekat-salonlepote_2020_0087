@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
 import { useNavigate } from 'react-router-dom';
 import InputField from '../../login/InputField';
+import useUsluge from '../hooks/useUsluge';
+import useZaposleni from '../hooks/useZaposleni';
 
 function CreateReservation( ) {
     const token= sessionStorage.getItem("token");
@@ -14,32 +16,10 @@ function CreateReservation( ) {
     zaposleni_id: '',
   });
 
-  const [usluge, setUsluge] = useState([]);
-  const [zaposleni, setZaposleni] = useState([]);
+  const [usluge] = useUsluge();
+  const [zaposleni] = useZaposleni();
 
-  useEffect(() => {
-     
-    axios
-      .get('http://127.0.0.1:8000/api/usluge')
-      .then((response) => {
-        setUsluge(response.data.data);
-        console.log(response.data.data);
-      })
-      .catch((error) => {
-        console.error('Greška pri učitavanju usluga', error);
-      });
-
-    
-    axios
-      .get('http://127.0.0.1:8000/api/zaposleni')
-      .then((response) => {
-        setZaposleni(response.data.data);
-        console.log(response.data.data)
-      })
-      .catch((error) => {
-        console.error('Greška pri učitavanju zaposlenih', error);
-      });
-  }, []);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

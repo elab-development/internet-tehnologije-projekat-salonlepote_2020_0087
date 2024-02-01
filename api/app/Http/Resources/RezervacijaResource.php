@@ -18,9 +18,9 @@ class RezervacijaResource extends JsonResource
             'id' => $this->id,
             'datum' => $this->datum,
             'vreme' => $this->vreme,
-            'korisnik' => new UserResource($this->whenLoaded('korisnik')),
-            'zaposleni' => new UserResource($this->whenLoaded('zaposleni')),
-            'usluga' => new UslugaResource($this->whenLoaded('usluga')),
+            'korisnik' => new UserResource($this->korisnik),
+            'zaposleni' => new UserResource($this->zaposleni  ),
+            'usluga' => new UslugaResource($this->usluga),
           
         ];
     }

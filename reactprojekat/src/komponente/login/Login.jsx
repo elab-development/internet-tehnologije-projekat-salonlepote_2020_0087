@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
 import InputField from './InputField'; 
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+    let navigate = useNavigate();
   const [credentials, setCredentials] = useState({
-    username: '',
-    password: '',
+    email: 'adonis.lind@example.org',
+    password: 'password',
   });
 
   const handleChange = (e) => {
@@ -19,9 +21,10 @@ function Login() {
       const response = await axios.post('http://127.0.0.1:8000/api/login', credentials);
       console.log(response.data);
         sessionStorage.setItem("token",response.data.token)
+        navigate('/rezervacije');
     } catch (error) {
       console.error('Login error', error);
-   
+        alert(error);
     }
   };
 
@@ -30,11 +33,11 @@ function Login() {
       <form onSubmit={handleSubmit} className="login-form">
         <h2>Sign In</h2>
         <InputField
-          name="username"
-          value={credentials.username}
+          name="email"
+          value={credentials.email}
           onChange={handleChange}
           placeholder="Username"
-          type="text"
+          type="email"
         />
         <InputField
           name="password"

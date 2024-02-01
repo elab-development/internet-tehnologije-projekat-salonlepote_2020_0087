@@ -4,6 +4,7 @@ import axios from 'axios';
 const Rezervacije = () => {
   const [reservations, setReservations] = useState([]);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Dodajte stanje isLoading
 
   useEffect(() => {
    
@@ -15,15 +16,20 @@ const Rezervacije = () => {
       },
     };
 
-   
     axios.get('http://127.0.0.1:8000/api/rezervacije', config)
       .then((response) => {
         setReservations(response.data.data);
+        setIsLoading(false);  
       })
       .catch((err) => {
         setError('Greška pri učitavanju rezervacija');
+        setIsLoading(false);  
       });
   }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;  
+  }
 
   if (error) {
     return <div>{error}</div>;
@@ -44,7 +50,7 @@ const Rezervacije = () => {
           </tr>
         </thead>
         <tbody>
-          {reservations.map((reservation) => (
+          {reservations && reservations.map((reservation) => (
             <tr key={reservation.id}>
               <td>{reservation.id}</td>
               <td>{reservation.datum}</td>

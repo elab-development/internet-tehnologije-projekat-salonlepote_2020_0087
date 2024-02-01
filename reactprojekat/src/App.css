@@ -84,3 +84,50 @@
   transform: translateY(-50%);
   color: #934683;
 }
+ 
+.rezervacije-container {
+  max-width: 800px;
+  margin: 50px auto;
+  background-color: #e1dee9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rezervacije-container h2 {
+  text-align: center;
+  color: #934683;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+thead {
+  background-color: #baabbd;
+  color: white;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #b6a6ca;
+}
+
+tr:nth-child(even) {
+  background-color: #d5cfe1;
+  color: white;
+}
+
+tr:nth-child(odd) {
+  background-color: #e1dee9;
+  color: white;
+}
+
+tr:hover {
+  background-color: #934683;
+  cursor: pointer;
+  color: white;
+}

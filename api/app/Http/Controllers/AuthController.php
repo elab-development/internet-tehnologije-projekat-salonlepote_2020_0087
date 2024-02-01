@@ -67,4 +67,12 @@ class AuthController extends Controller
             'token' => $token,
         ]);
     }
+
+
+    public function getAllEmployees()  //dodata metoda za potrebe react domaceg, metoda koja vraca sve zaposlene
+    {
+        $employees = User::where('role', 'sminker')->get();
+
+        return UserResource::collection($employees);
+    }
 }

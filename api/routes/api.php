@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/zaposleni', [AuthController::class, 'getAllEmployees']);
 Route::get('/usluge', [UslugaController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']); 

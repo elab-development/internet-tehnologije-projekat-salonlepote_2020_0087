@@ -170,3 +170,24 @@ button {
 button:hover {
   background-color: #d5cfe1;
 }
+
+ 
+.input-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #b6a6ca;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #fff;  
+  color: #000;  
+  appearance: none; 
+}
+
+.input-group select:hover {
+  border-color: #934683;  
+}
+ 
+.input-group select:focus {
+  outline: none; 
+  border-color: #934683;  
+}

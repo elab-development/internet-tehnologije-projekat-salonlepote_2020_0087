@@ -3,7 +3,7 @@ import axios from 'axios';
 import InputField from './InputField'; 
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({setToken}) {
     let navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: 'adonis.lind@example.org',
@@ -22,6 +22,7 @@ function Login() {
       console.log(response.data);
         sessionStorage.setItem("token",response.data.token)
         sessionStorage.setItem("id",response.data.user.id)
+        setToken(response.data.token);
         navigate('/rezervacije');
     } catch (error) {
       console.error('Login error', error);

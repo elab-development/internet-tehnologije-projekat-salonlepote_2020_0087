@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons'; 
+import InputField from './InputField'; 
 
 function Login() {
   const [credentials, setCredentials] = useState({
@@ -30,30 +29,21 @@ function Login() {
     <div className="login-container">
       <form onSubmit={handleSubmit} className="login-form">
         <h2>Sign In</h2>
-        <div className="input-group">
-          <FontAwesomeIcon icon={faUser} className="input-icon" />
-          <input
-            type="text"
-            name="username"
-            value={credentials.username}
-            onChange={handleChange}
-            placeholder="Username"
-            required
-          />
-        </div>
-        <div className="input-group">
-          <FontAwesomeIcon icon={faLock} className="input-icon" />
-          <input
-            type="password"
-            name="password"
-            value={credentials.password}
-            onChange={handleChange}
-            placeholder="Password"
-            required
-          />
-        </div>
+        <InputField
+          name="username"
+          value={credentials.username}
+          onChange={handleChange}
+          placeholder="Username"
+          type="text"
+        />
+        <InputField
+          name="password"
+          value={credentials.password}
+          onChange={handleChange}
+          placeholder="Password"
+          type="password"
+        />
         <div className="options">
-        
           <button type="submit" className="login-button">Login</button>
         </div>
         <div className="footer">

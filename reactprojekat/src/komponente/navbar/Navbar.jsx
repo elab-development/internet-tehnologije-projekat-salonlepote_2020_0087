@@ -5,20 +5,20 @@ function Navbar({ token, setToken }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
- axios.post('http://127.0.0.1:8000/api/logout', null, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then(() => {
-      
-      setToken(null);
-      navigate('/');
-    })
-    .catch((error) => {
-      console.error('Greška pri odjavljivanju', error);
-      // Tretirajte grešku pri odjavljivanju prema potrebi
-    });
+    axios.post('http://127.0.0.1:8000/api/logout', null, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(() => {
+          
+          setToken(null);
+          navigate('/');
+        })
+        .catch((error) => {
+          console.error('Greška pri odjavljivanju', error);
+          // Tretirajte grešku pri odjavljivanju prema potrebi
+        });
   };
 
   return (

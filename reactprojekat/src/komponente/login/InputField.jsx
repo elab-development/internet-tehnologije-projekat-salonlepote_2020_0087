@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons'; 
 
 const InputField = ({ name, value, onChange, placeholder, type }) => {
-  const icon = name === 'username' ? faUser : faLock;
+  const icon = name === 'email' ? faUser : faLock;
 
   return (
     <div className="input-group">

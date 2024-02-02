@@ -191,3 +191,7 @@ button:hover {
   outline: none; 
   border-color: #934683;  
 }
+.glavniContainer{
+   margin: 50px;
+   box-shadow: 2p;
+}

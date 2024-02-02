@@ -30,7 +30,7 @@ function Cenovnik() {
   };
 
   return (
-    <div>
+    <div className='glavniContainer'>
       <h2>Cenovnik Usluga</h2>
       <button onClick={handleSortChange}>
         Sortiraj po ceni ({sortDirection === 'asc' ? 'Rastuće' : 'Opadajuće'})

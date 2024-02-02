@@ -62,7 +62,7 @@ const Rezervacije = () => {
   }
 
   return (
-    <div>
+    <div className='glavniContainer'>
       <h2>Lista Rezervacija</h2>
       <input
         type="text"

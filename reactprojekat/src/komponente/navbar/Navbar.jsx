@@ -25,7 +25,8 @@ function Navbar({ token, setToken }) {
     <nav>
       <ul>
         <li>
-          <Link to="/">Početna</Link>
+          <Link to="/">Login</Link>
+          <Link to="/register">Register</Link>
         </li>
         <li>
             <Link to="/cenovnik">Cenovnik</Link>

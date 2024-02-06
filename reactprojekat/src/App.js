@@ -7,6 +7,7 @@ import {BrowserRouter, Routes,Route } from 'react-router-dom';
 import Navbar from './komponente/navbar/Navbar';
 import CreateReservation from './komponente/rezervacije/create/CreateReservation';
 import Cenovnik from './komponente/usluge/cenovnik';
+import Registration from './komponente/register/Register';
  
 function App() {
   const [token,setToken] = useState(null);
@@ -18,6 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element ={<Login  setToken={setToken}></Login>  }/>
             <Route path="/rezervacije/dodaj" element ={ <CreateReservation></CreateReservation>  }/>
+            <Route path="/register" element={<Registration />} />
 
             <Route path="/rezervacije" element ={ <Rezervacije></Rezervacije>  }/>
             <Route path="/cenovnik" element={<Cenovnik />} />

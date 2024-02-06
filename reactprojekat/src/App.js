@@ -19,7 +19,8 @@ function App() {
           <Routes>
             <Route path="/" element ={<Login  setToken={setToken}></Login>  }/>
             <Route path="/rezervacije/dodaj" element ={ <CreateReservation></CreateReservation>  }/>
-            <Route path="/register" element={<Registration />} />
+            <Route path="/register" element={<Registration />} />    {/*dodato za seminarski  */}
+o          
 
             <Route path="/rezervacije" element ={ <Rezervacije></Rezervacije>  }/>
             <Route path="/cenovnik" element={<Cenovnik />} />

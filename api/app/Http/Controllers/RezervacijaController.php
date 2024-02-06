@@ -27,29 +27,48 @@ class RezervacijaController extends Controller
     {
         // Uzmi ulogovanog korisnika
         $user = $request->user();
-
+    
         $validator = Validator::make($request->all(), [
             'usluga_id' => 'required|exists:uslugas,id',
             'datum' => 'required|date|after_or_equal:today',
-            'vreme' => 'required',
-            'zaposleni_id' => 'required|exists:users,id',
+            'vreme' => 'required|date_format:H:i',
+            'zaposleni_id' => [
+                'required',
+                'exists:users,id',
+                // Dodajemo pravilo za proveru preklapanja termina
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->datum . ' ' . $request->vreme);
+                    $endDateTime = (clone $startDateTime)->addHour(); // Usluga traje 1 sat
+    
+                    // Provera postojanja rezervacije koja se preklapa
+                    $existingReservation = Rezervacija::where('zaposleni_id', $request->zaposleni_id)
+                        ->where(function ($query) use ($startDateTime, $endDateTime) {
+                            $query->whereBetween('datum', [$startDateTime, $endDateTime])
+                                ->orWhereBetween('vreme', [$startDateTime->format('H:i'), $endDateTime->format('H:i')]);
+                        })->exists();
+    
+                    if ($existingReservation) {
+                        $fail('Zaposleni je već rezervisan u odabranom terminu.');
+                    }
+                },
+            ],
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-
+    
         // Postavi korisnika na ulogovanog korisnika
         $request->merge(['korisnik_id' => $user->id]);
-
+    
         $rezervacija = Rezervacija::create($request->all());
-
-
-        //sada jos i saljemo rezervaciju na mejl 
+    
+        // Sada još i šaljemo rezervaciju na mejl 
         Mail::to($user->email)->send(new RezervacijaConfirmation($rezervacija, $user));
-
+    
         return new RezervacijaResource($rezervacija);
     }
+    
 
     public function update(Request $request, $id)
     {

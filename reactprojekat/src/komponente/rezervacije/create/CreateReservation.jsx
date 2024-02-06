@@ -41,8 +41,10 @@ function CreateReservation( ) {
         navigate('/rezervacije');
       })
       .catch((error) => {
-        console.error('Greška pri kreiranju rezervacije', error);
-        // Tretirajte grešku pri kreiranju prema potrebi
+        
+          alert(JSON.stringify(error.response.data.error));
+          console.error('Greška pri kreiranju rezervacije', error);
+        
       });
   };
 

@@ -41,6 +41,9 @@ function Navbar({ token, setToken }) {
               <Link to="/rezervacije">Rezervacije</Link>
             </li>
             <li>
+              <Link to="/usluge">Usluge</Link>
+            </li>
+            <li>
               <Link to="/rezervacije/dodaj">Dodaj</Link>
             </li>
             <li>

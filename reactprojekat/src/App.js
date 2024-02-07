@@ -8,6 +8,7 @@ import Navbar from './komponente/navbar/Navbar';
 import CreateReservation from './komponente/rezervacije/create/CreateReservation';
 import Cenovnik from './komponente/usluge/cenovnik';
 import Registration from './komponente/register/Register';
+import Mojerezervacije from './komponente/rezervacije/zaposleni/MojeRezervacije';
  
 function App() {
   const [token,setToken] = useState(null);
@@ -20,8 +21,8 @@ function App() {
             <Route path="/" element ={<Login  setToken={setToken}></Login>  }/>
             <Route path="/rezervacije/dodaj" element ={ <CreateReservation></CreateReservation>  }/>
             <Route path="/register" element={<Registration />} />    {/*dodato za seminarski  */}
-o          
-
+        
+          <Route path="/sminker" element={<Mojerezervacije />} /> {/*dodato za seminarski  */}
             <Route path="/rezervacije" element ={ <Rezervacije></Rezervacije>  }/>
             <Route path="/cenovnik" element={<Cenovnik />} />
             </Routes>

@@ -22,7 +22,25 @@ class RezervacijaController extends Controller
         $rezervacije = Rezervacija::where('korisnik_id', $user->id)->get();
         return RezervacijaResource::collection($rezervacije);
     }
-
+    public function getReservationsByEmployee(Request $request) //vraca sve rezervacije od ulogovanog zaposlenog 
+    {
+        try {
+            // Uzmi ulogovanog korisnika
+            $user = $request->user();
+    
+            // Proveri da li je ulogovani korisnik sminker
+            if ($user->role !== 'sminker') {
+                return response()->json(['error' => 'Nemate pristup ovom resursu'], 403);
+            }
+    
+            // Vrati sve rezervacije gde je zaposleni_id jednak id-ju ulogovanog zaposlenog
+            $rezervacije = Rezervacija::where('zaposleni_id', $user->id)->get();
+            
+            return RezervacijaResource::collection($rezervacije);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Rezervacije not found'], 404);
+        }
+    }
     public function store(Request $request)
     {
         // Uzmi ulogovanog korisnika

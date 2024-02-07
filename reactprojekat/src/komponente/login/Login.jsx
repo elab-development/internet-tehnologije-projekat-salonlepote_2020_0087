@@ -3,8 +3,8 @@ import axios from 'axios';
 import InputField from './InputField'; 
 import { useNavigate } from 'react-router-dom';
 
-function Login({setToken}) {
-    let navigate = useNavigate();
+function Login({ setToken }) {
+  let navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: 'adonis.lind@example.org',
     password: 'password',
@@ -20,13 +20,22 @@ function Login({setToken}) {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/login', credentials);
       console.log(response.data);
-        sessionStorage.setItem("token",response.data.token)
-        sessionStorage.setItem("id",response.data.user.id)
-        setToken(response.data.token);
+      sessionStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("id", response.data.user.id);
+      setToken(response.data.token);
+
+      // Proveri ulogu korisnika i preusmeri ga na odgovarajuću putanju
+      const userRole = response.data.user.role;
+      if (userRole === 'sminker') {
+        navigate('/sminker');
+      } else if (userRole === 'admin') {
+        navigate('/admin');
+      } else {
         navigate('/rezervacije');
+      }
     } catch (error) {
       console.error('Login error', error);
-        alert(error);
+      alert(error);
     }
   };
 
@@ -52,7 +61,7 @@ function Login({setToken}) {
           <button type="submit" className="login-button">Login</button>
         </div>
         <div className="footer">
-          <a href="/signup">Don't have an account? Sign Up</a>
+          <a href="/register">Don't have an account? Sign Up</a>
           <a href="/forgot-password">Forgot Password</a>
         </div>
       </form>

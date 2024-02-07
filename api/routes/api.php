@@ -28,13 +28,17 @@ Route::get('/ocene/{id}', [OcenaController::class, 'show']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {  //svi ulogovani mogu da se odjave
+
+
     Route::post('/logout', [AuthController::class, 'logout']); 
   
 });
 
 
 Route::middleware(['auth:sanctum', 'role:sminker'])->group(function () {
+
     Route::resource('usluge', UslugaController::class)->except(['create', 'edit','index']);
+    Route::get('/rezervacije/getReservationsByEmployee', [RezervacijaController::class, 'getReservationsByEmployee']);
 });
 
 Route::middleware(['auth:sanctum', 'role:korisnik'])->group(function () {

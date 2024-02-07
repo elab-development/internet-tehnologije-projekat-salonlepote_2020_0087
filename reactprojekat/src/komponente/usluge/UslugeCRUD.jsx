@@ -9,6 +9,7 @@ function Usluge() {
     opis: '',
     cena: '',
   });
+  const [editingUsluga, setEditingUsluga] = useState(null);
 
   useEffect(() => {
     // Dohvati token iz sessionStorage
@@ -58,6 +59,52 @@ function Usluge() {
       .catch((error) => {
         console.error('Greška pri kreiranju usluge', error);
       });
+  };
+
+  const handleEdit = (usluga) => {
+    setEditingUsluga(usluga);
+  };
+
+  const handleInputChangeEdit = (e) => {
+    const { name, value } = e.target;
+    setEditingUsluga({ ...editingUsluga, [name]: value });
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+
+    // Dohvati token iz sessionStorage
+    const token = sessionStorage.getItem('token');
+
+    // Kreiraj zaglavlje sa tokenom
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    // Izvrši Axios PUT zahtev za ažuriranje usluge sa dodatim zaglavlje
+    axios.put(`http://127.0.0.1:8000/api/usluge/${editingUsluga.id}`, editingUsluga, { headers })
+      .then((response) => {
+        // Ažuriraj uslugu u state
+        setUsluge((prevUsluge) => {
+          const updatedUsluge = prevUsluge.map((usluga) => {
+            if (usluga.id === editingUsluga.id) {
+              return response.data.data;
+            }
+            return usluga;
+          });
+          return updatedUsluge;
+        });
+
+        // Završi uređivanje
+        setEditingUsluga(null);
+      })
+      .catch((error) => {
+        console.error('Greška pri ažuriranju usluge', error);
+      });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingUsluga(null);
   };
 
   const handleDelete = (id) => {
@@ -118,9 +165,38 @@ function Usluge() {
             <p>Opis: {usluga.opis}</p>
             <p>Cena: {usluga.cena}</p>
             <button onClick={() => handleDelete(usluga.id)}>Obriši</button>
+            <button onClick={() => handleEdit(usluga)}>Uredi</button>
           </li>
         ))}
       </ul>
+      {editingUsluga && (
+        <form onSubmit={handleUpdate}>
+          <h3>Uređivanje usluge</h3>
+          <input
+            type="text"
+            name="naziv"
+            placeholder="Naziv usluge"
+            value={editingUsluga.naziv}
+            onChange={handleInputChangeEdit}
+          />
+          <input
+            type="text"
+            name="opis"
+            placeholder="Opis usluge"
+            value={editingUsluga.opis}
+            onChange={handleInputChangeEdit}
+          />
+          <input
+            type="number"
+            name="cena"
+            placeholder="Cena usluge"
+            value={editingUsluga.cena}
+            onChange={handleInputChangeEdit}
+          />
+          <button type="submit">Sačuvaj izmene</button>
+          <button onClick={handleCancelEdit}>Otkaži</button>
+        </form>
+      )}
     </div>
   );
 }

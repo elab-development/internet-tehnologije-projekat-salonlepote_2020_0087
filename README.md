@@ -1,1 +1,20 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/1IMeAlJr)
+FUNKCIONALNOSTI APLIKACIJE
+1. Prijava, registracija i logout
+2. Pregled cenovnika usluga
+3. Kreiranje rezervacije kod izabranog zaposlenog
+4. Slanje potrvrde rezervacije na mejl
+5. Mogucnost CRUD operacija od strane zaposlenih nad objektom usluga
+6. Mogucnost pregleda statitstika na admin page-u
+
+POKRETANJE APLIKACIJE
+  1. Pokretanje bekenda - laravel aplikacije
+     
+         cd api
+         php artisan migrate:fresh --seed
+         php artisan serve
+     
+  3.  Pokretanje frontetnda - react aplikacije
+  4.       
+         cd reactprojekat      
+         npm start
+      

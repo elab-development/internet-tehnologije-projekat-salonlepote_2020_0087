@@ -6,8 +6,39 @@ function Cenovnik() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortDirection, setSortDirection] = useState('asc');
   const uslugePerPage = 5;
+  const [valute, setValute] = useState([]);
+  const [odabranaValuta, setOdabranaValuta] = useState('USD');
+  const [konvertovaneCene, setKonvertovaneCene] = useState({});
 
-  const sortedUsluge = usluge.slice().sort((a, b) => {
+  useEffect(() => {
+    // Učitavanje dostupnih valuta
+    fetch('https://api.exchangerate-api.com/v4/latest/USD')
+      .then((res) => res.json())
+      .then((data) => {
+        setValute(Object.keys(data.rates));
+      });
+  }, []);
+
+  useEffect(() => {
+    // Konverzija cena usluga u odabranu valutu
+    if (odabranaValuta !== 'USD') {
+      fetch(`https://api.exchangerate-api.com/v4/latest/USD`)
+        .then((res) => res.json())
+        .then((data) => {
+          const rate = data.rates[odabranaValuta];
+          const konvertovane = usluge.map(usluga => ({
+            ...usluga,
+            cena: (usluga.cena * rate).toFixed(2)
+          }));
+          setKonvertovaneCene(konvertovane);
+        });
+    } else {
+      setKonvertovaneCene(usluge);
+    }
+  }, [odabranaValuta, usluge]);
+
+
+  const sortedUsluge = konvertovaneCene.slice().sort((a, b) => {
     if (sortDirection === 'asc') {
       return a.cena - b.cena;
     } else {
@@ -32,6 +63,14 @@ function Cenovnik() {
   return (
     <div className='glavniContainer'>
       <h2>Cenovnik Usluga</h2>
+      <div>
+        <label>Odaberite valutu:</label>
+        <select value={odabranaValuta} onChange={(e) => setOdabranaValuta(e.target.value)}>
+          {valute.map((valuta) => (
+            <option key={valuta} value={valuta}>{valuta}</option>
+          ))}
+        </select>
+      </div>
       <button onClick={handleSortChange}>
         Sortiraj po ceni ({sortDirection === 'asc' ? 'Rastuće' : 'Opadajuće'})
       </button>
@@ -40,7 +79,7 @@ function Cenovnik() {
           <tr>
             <th>ID</th>
             <th>Naziv Usluge</th>
-            <th>Cena</th>
+            <th>Cena ({odabranaValuta})</th>
             <th>Opis</th>
           </tr>
         </thead>

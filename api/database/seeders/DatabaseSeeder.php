@@ -57,6 +57,48 @@ class DatabaseSeeder extends Seeder
             'opis' => 'Opis usluge 5',
             'cena' => 90.00,
         ]);
+        Usluga::create([
+            'naziv' => 'Tretman lica: Hidratacija',
+            'opis' => 'Dubinska hidratacija kože lica uz korišćenje visokokvalitetnih proizvoda.',
+            'cena' => 70.00,
+        ]);
+
+        Usluga::create([
+            'naziv' => 'Tretman lica: Čišćenje pora',
+            'opis' => 'Profesionalno čišćenje pora lica uz upotrebu blagih i efikasnih preparata.',
+            'cena' => 55.00,
+        ]);
+
+        Usluga::create([
+            'naziv' => 'Manikir',
+            'opis' => 'Uslužno sređivanje noktiju na rukama uz oblikovanje i lakiranje.',
+            'cena' => 30.00,
+        ]);
+
+        Usluga::create([
+            'naziv' => 'Pedicir',
+            'opis' => 'Uslužno sređivanje noktiju na nogama uz oblikovanje, uklanjanje zadebljanja i lakiranje.',
+            'cena' => 35.00,
+        ]);
+
+        Usluga::create([
+            'naziv' => 'Masaža leđa',
+            'opis' => 'Relaksirajuća masaža leđa radi oslobađanja od napetosti i bolova.',
+            'cena' => 40.00,
+        ]);
+
+        Usluga::create([
+            'naziv' => 'Depilacija: Noge',
+            'opis' => 'Uklanjanje dlačica sa nogu koristeći metode depilacije prilagođene vašim potrebama.',
+            'cena' => 25.00,
+        ]);
+
+        Usluga::create([
+            'naziv' => 'Depilacija: Bikini zona',
+            'opis' => 'Precizno uklanjanje dlačica sa bikini zone za besprekorni izgled.',
+            'cena' => 35.00,
+        ]);
+
 
         // Pozovite factory za Rezervacija model
         Rezervacija::factory(50)->create();

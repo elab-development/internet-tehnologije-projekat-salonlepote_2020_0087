@@ -8,7 +8,7 @@ function Cenovnik() {
   const uslugePerPage = 5;
   const [valute, setValute] = useState([]);
   const [odabranaValuta, setOdabranaValuta] = useState('USD');
-  const [konvertovaneCene, setKonvertovaneCene] = useState({});
+  const [konvertovaneCene, setKonvertovaneCene] =  useState([]);
 
   useEffect(() => {
     // Učitavanje dostupnih valuta

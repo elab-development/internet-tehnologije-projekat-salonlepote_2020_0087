@@ -19,8 +19,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+          //  za User model sa ulogom "admin" 1 puta
+          User::factory(1)->create(['role' => 'admin']);
         //  za User model sa ulogom "korisnik" 5 puta
         User::factory(5)->create(['role' => 'korisnik']);
+       
 
         //  za User model sa ulogom "sminker" 5 puta
         User::factory(5)->create(['role' => 'sminker']);
@@ -56,7 +59,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Pozovite factory za Rezervacija model
-        Rezervacija::factory(10)->create();
+        Rezervacija::factory(50)->create();
 
         // Pozovite factory za Ocena model
          Ocena::factory(10)->create();

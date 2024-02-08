@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function Navbar({ token, setToken }) {
+function Navbar({ token, setToken,role, setRole }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -12,6 +12,7 @@ function Navbar({ token, setToken }) {
       })
       .then(() => {
         setToken(null);
+        setRole(null);
         navigate('/');
       })
       .catch((error) => {
@@ -35,14 +36,12 @@ function Navbar({ token, setToken }) {
         <li>
           <Link to="/cenovnik">Cenovnik</Link>
         </li>
-        {token && (
+        {token && role=="korisnik" && (
           <>
             <li>
               <Link to="/rezervacije">Rezervacije</Link>
             </li>
-            <li>
-              <Link to="/usluge">Usluge</Link>
-            </li>
+           
             <li>
               <Link to="/rezervacije/dodaj">Dodaj</Link>
             </li>
@@ -51,6 +50,14 @@ function Navbar({ token, setToken }) {
             </li>
           </>
         )}
+
+      {token && role=="sminker" && (
+
+
+            <li>
+            <Link to="/usluge">Usluge</Link>
+            </li>
+            )}
       </ul>
     </nav>
   );

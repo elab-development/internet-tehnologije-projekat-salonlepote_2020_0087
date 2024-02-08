@@ -3,7 +3,7 @@ import axios from 'axios';
 import InputField from './InputField'; 
 import { useNavigate } from 'react-router-dom';
 
-function Login({ setToken }) {
+function Login({ setToken ,setRole}) {
   let navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: 'adonis.lind@example.org',
@@ -23,7 +23,7 @@ function Login({ setToken }) {
       sessionStorage.setItem("token", response.data.token);
       sessionStorage.setItem("id", response.data.user.id);
       setToken(response.data.token);
-
+      setRole(response.data.user.role);
       // Proveri ulogu korisnika i preusmeri ga na odgovarajuću putanju
       const userRole = response.data.user.role;
       if (userRole === 'sminker') {

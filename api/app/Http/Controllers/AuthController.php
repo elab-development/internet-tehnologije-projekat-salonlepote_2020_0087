@@ -48,18 +48,25 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:8',
+            'role' => 'nullable',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $user = User::create([
+        $userData = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
-
+        ];
+    
+        // Dodaj role samo ako nije null
+        if ($request->has('role')) {
+            $userData['role'] = $request->role;
+        }
+    
+        $user = User::create($userData);
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([

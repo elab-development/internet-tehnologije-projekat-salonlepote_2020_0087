@@ -13,13 +13,14 @@ import Usluge from './komponente/usluge/UslugeCRUD';
  
 function App() {
   const [token,setToken] = useState(null);
+  const [role,setRole] = useState(null);
   return (
     <div className="App">
       
         <BrowserRouter>
-        <Navbar token={token} setToken={setToken}/>
+        <Navbar token={token} setToken={setToken} role={role} setRole={setRole}/>
           <Routes>
-            <Route path="/" element ={<Login  setToken={setToken}></Login>  }/>
+            <Route path="/" element ={<Login  setToken={setToken}  setRole={setRole}></Login>  }/>
             <Route path="/rezervacije/dodaj" element ={ <CreateReservation></CreateReservation>  }/>
             <Route path="/register" element={<Registration />} />    {/*dodato za seminarski  */}
             <Route path="/usluge" element={<Usluge />} />   {/*dodato za seminarski  */}

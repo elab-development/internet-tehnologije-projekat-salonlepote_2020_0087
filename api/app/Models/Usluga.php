@@ -13,7 +13,11 @@ class Usluga extends Model
     ]; 
     public function rezervacije()
     {
-        return $this->belongsToMany(Rezervacija::class );
+        return $this->hasMany(Rezervacija::class );
     }
-
+    public function ocene()
+    {
+        return $this->hasMany(Ocena::class, 'usluga_id');
+    }
+    
 }

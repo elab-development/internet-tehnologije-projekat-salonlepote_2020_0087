@@ -10,6 +10,7 @@ import Cenovnik from './komponente/usluge/cenovnik';
 import Registration from './komponente/register/Register';
 import Mojerezervacije from './komponente/rezervacije/zaposleni/MojeRezervacije';
 import Usluge from './komponente/usluge/UslugeCRUD';
+import Admin from './komponente/admin/Admin';
  
 function App() {
   const [token,setToken] = useState(null);
@@ -24,7 +25,9 @@ function App() {
             <Route path="/rezervacije/dodaj" element ={ <CreateReservation></CreateReservation>  }/>
             <Route path="/register" element={<Registration />} />    {/*dodato za seminarski  */}
             <Route path="/usluge" element={<Usluge />} />   {/*dodato za seminarski  */}
-          <Route path="/sminker" element={<Mojerezervacije />} /> {/*dodato za seminarski  */}
+            <Route path="/sminker" element={<Mojerezervacije />} /> {/*dodato za seminarski  */}
+            <Route path="/admin" element={<Admin />} /> {/*dodato za seminarski  */}
+
             <Route path="/rezervacije" element ={ <Rezervacije></Rezervacije>  }/>
             <Route path="/cenovnik" element={<Cenovnik />} />
             </Routes>

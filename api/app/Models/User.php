@@ -43,4 +43,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function rezervacije()
+{
+    return $this->hasMany(Rezervacija::class, 'zaposleni_id');
+}
+
 }

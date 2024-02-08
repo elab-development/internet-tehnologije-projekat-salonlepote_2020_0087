@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+*/ 
+Route::get('admin/statistike', [RezervacijaController::class, 'adminStatistike']);
 
 Route::get('/zaposleni', [AuthController::class, 'getAllEmployees']);
 Route::get('/usluge', [UslugaController::class, 'index']);
@@ -56,5 +57,5 @@ Route::middleware(['auth:sanctum', 'role:korisnik'])->group(function () {
 
 
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-    //ovo cemo implementirati za seminarski
+   
 });

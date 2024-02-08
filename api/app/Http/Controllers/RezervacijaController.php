@@ -6,6 +6,8 @@ use App\Models\Rezervacija;
 use Illuminate\Http\Request;
 use App\Http\Resources\RezervacijaResource;
 use App\Mail\RezervacijaConfirmation;
+use App\Models\User;
+use App\Models\Usluga;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
@@ -145,4 +147,43 @@ class RezervacijaController extends Controller
             return response()->json(['error' => 'Rezervacija not found'], 404);
         }
     }
+    public function adminStatistike()
+{
+    try {
+        $statistike = [];
+
+        // Ukupan broj zaposlenih
+        $statistike['ukupan_broj_zaposlenih'] = User::where('role', 'sminker')->count();
+
+        // Ukupan broj usluga
+        $statistike['ukupan_broj_usluga'] = Usluga::count();
+
+        // Ukupan broj korisnika
+        $statistike['ukupan_broj_korisnika'] = User::where('role', 'korisnik')->count();
+
+      
+        // Ukupan broj rezervacija za svaku uslugu
+        $usluge = Usluga::withCount('rezervacije')->get();
+        $statistike['ukupan_broj_rezervacija_po_usluzi'] = $usluge->pluck('rezervacije_count', 'naziv');
+       
+        // Ukupan broj rezervacija po zaposlenom
+        $zaposleni = User::where('role', 'sminker')->withCount('rezervacije')->get();
+        $statistike['ukupan_broj_rezervacija_po_zaposlenom'] = $zaposleni->pluck('rezervacije_count', 'name');
+      
+        // Prosecna ocena po usluzi
+        $usluge = Usluga::with(['ocene' => function ($query) {
+            $query->selectRaw('usluga_id, avg(ocena) as prosecna_ocena')->groupBy('usluga_id');
+        }])->get();
+        
+        $statistike['prosecna_ocena_po_usluzi'] = $usluge->mapWithKeys(function ($usluga) {
+            return [$usluga->naziv => $usluga->ocene->isNotEmpty() ? round($usluga->ocene->first()->prosecna_ocena, 2) : null];
+        });
+        
+     
+        return response()->json($statistike, 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Greška prilikom dobavljanja statistika.'], 500);
+    }
+}
+
 }

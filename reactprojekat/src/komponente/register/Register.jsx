@@ -21,8 +21,7 @@ function Registration() {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/register', userInfo);
       console.log(response.data);
-      sessionStorage.setItem("token", response.data.token);
-      sessionStorage.setItem("id", response.data.user.id);
+      
    
       navigate('/');
     } catch (error) {

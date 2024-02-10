@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import useUsluge from '../rezervacije/hooks/useUsluge';
+import { useQuery } from 'react-query';
+
+
 
 function Cenovnik() {
   const [usluge] = useUsluge();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortDirection, setSortDirection] = useState('asc');
   const uslugePerPage = 5;
-  const [valute, setValute] = useState([]);
+ 
   const [odabranaValuta, setOdabranaValuta] = useState('USD');
   const [konvertovaneCene, setKonvertovaneCene] =  useState([]);
+  
 
-  useEffect(() => {
-    // Učitavanje dostupnih valuta
-    fetch('https://api.exchangerate-api.com/v4/latest/USD')
-      .then((res) => res.json())
-      .then((data) => {
-        setValute(Object.keys(data.rates));
-      });
-  }, []);
+  //prepravljen kod zbog dodavanja opcije kesiranje
+  //na ovaj nacin ce se prvo ucitavati kesirani podaci, ako postoje, a ako ne psotoje onda se kreira zahtev
+  
+  
+  const fetchValute = async () => {
+    const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+    const data = await response.json();
+    return Object.keys(data.rates); // Vraća samo ključeve (valute) iz odgovora
+  };
+ 
+
+  const { data: valute, isLoading: isLoadingValute, error } = useQuery('valute', fetchValute);
 
   useEffect(() => {
     // Konverzija cena usluga u odabranu valutu
@@ -63,14 +71,14 @@ function Cenovnik() {
   return (
     <div className='glavniContainer'>
       <h2>Cenovnik Usluga</h2>
-      <div>
+      {valute &&   <div>
         <label>Odaberite valutu:</label>
         <select value={odabranaValuta} onChange={(e) => setOdabranaValuta(e.target.value)}>
           {valute.map((valuta) => (
             <option key={valuta} value={valuta}>{valuta}</option>
           ))}
         </select>
-      </div>
+      </div>}
       <button onClick={handleSortChange}>
         Sortiraj po ceni ({sortDirection === 'asc' ? 'Rastuće' : 'Opadajuće'})
       </button>
